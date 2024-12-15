@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:minbaro_app/components/scaffold_with_navigation_shell.dart';
+import 'package:minbaro_app/models/post.dart';
 import 'package:minbaro_app/pages/home/views/home_page.dart';
+import 'package:minbaro_app/pages/post_detail/views/post_detail_page.dart';
+import 'package:minbaro_app/pages/watchlist/views/watchlist_page.dart';
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
@@ -18,18 +21,19 @@ class AppRouter {
             routes: [
               GoRoute(
                   path: '/',
+                  name: 'home',
                   builder: (context, state) => const HomePage(),
                   routes: [
                     GoRoute(
+                      path: 'watchlist',
+                      name: 'watchlist',
+                      builder: (context, state) => WatchlistPage(),
+                    ),
+                    GoRoute(
                       path: 'post/:id',
-                      builder: (context, state) => Scaffold(
-                        appBar: AppBar(
-                          title: Text('Post'),
-                        ),
-                        body: Center(
-                          child: Text(state.pathParameters['id']!),
-                        ),
-                      ),
+                      name: 'post',
+                      builder: (context, state) =>
+                          PostDetailPage(post: state.extra as Post),
                     ),
                   ]),
             ],
@@ -38,6 +42,7 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: '/search',
+                name: 'search',
                 builder: (context, state) => Scaffold(
                   body: Center(
                     child: Text('Search'),

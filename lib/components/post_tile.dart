@@ -1,13 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:minbaro_app/components/more_modal_sheet.dart';
+import 'package:minbaro_app/components/post_action_button.dart';
+import 'package:minbaro_app/models/post.dart';
 
-class PostTile extends StatelessWidget {
-  const PostTile({super.key});
+class PostTile extends StatefulWidget {
+  const PostTile({
+    required this.post,
+    super.key,
+  });
 
+  final Post post;
+
+  @override
+  State<PostTile> createState() => _PostTileState();
+}
+
+class _PostTileState extends State<PostTile> {
   final _radius = 20.0;
 
-  final _content =
-      'Ad in magna commodo tempor ipsum @esse aute occaecat amet. Id laborum do in ut officia aliqua. Voluptate eiusmod nulla reprehenderit labore qui. Proident @voluptate pariatur ex exercitation deserunt sint. Laboris ullamco ea eiusmod laboris in quis sint anim nostrud pariatur nostrud @adipisicing.';
+  bool _isFavourited = false;
+  bool _isCommented = false;
+  bool _isBookmarked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +54,20 @@ class PostTile extends StatelessWidget {
                     Text.rich(
                       TextSpan(
                         text: 'topic',
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium!
-                            .copyWith(color: Colors.deepPurple),
+                        style:
+                            Theme.of(context).textTheme.labelMedium!.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                         children: [
                           TextSpan(
                             text: ' • 3m',
                             style: Theme.of(context)
                                 .textTheme
                                 .labelMedium!
-                                .copyWith(color: Colors.grey),
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface),
                           ),
                         ],
                       ),
@@ -59,42 +76,74 @@ class PostTile extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              Icon(CupertinoIcons.ellipsis),
+              CupertinoButton(
+                padding: const EdgeInsets.all(0),
+                sizeStyle: CupertinoButtonSize.small,
+                onPressed: () {
+                  showMoreModalSheet(context);
+                },
+                child: Icon(
+                  CupertinoIcons.ellipsis,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
             ],
+          ),
+          _buildIndentedRow(
+            child: Flexible(
+              child: Text(
+                widget.post.title,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
           ),
           _buildIndentedRow(
             child: Flexible(
               child: Text.rich(
                 TextSpan(
-                  text: _content,
+                  text: widget.post.body,
                 ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 5,
               ),
             ),
           ),
           _buildIndentedRow(
             child: Row(
-              spacing: 8,
+              spacing: 32,
               children: [
-                IconButton(
-                  icon: Icon(
-                    CupertinoIcons.heart,
-                    size: 14,
-                  ),
-                  onPressed: () {},
+                PostActionButton(
+                  iconData: CupertinoIcons.heart,
+                  selectedIconData: CupertinoIcons.heart_fill,
+                  label: '1.2k',
+                  selected: _isFavourited,
+                  selectedColor: Colors.red,
+                  onPressed: () {
+                    setState(() {
+                      _isFavourited = !_isFavourited;
+                    });
+                  },
                 ),
-                IconButton(
-                  icon: Icon(
-                    CupertinoIcons.bubble_left,
-                    size: 14,
-                  ),
-                  onPressed: () {},
+                PostActionButton(
+                  iconData: CupertinoIcons.bubble_middle_bottom,
+                  selectedIconData: CupertinoIcons.bubble_middle_bottom_fill,
+                  label: '80',
+                  selected: _isCommented,
+                  onPressed: () {
+                    setState(() {
+                      _isCommented = !_isCommented;
+                    });
+                  },
                 ),
-                IconButton(
-                  icon: Icon(
-                    CupertinoIcons.bookmark,
-                    size: 14,
-                  ),
-                  onPressed: () {},
+                PostActionButton(
+                  iconData: CupertinoIcons.bookmark,
+                  selectedIconData: CupertinoIcons.bookmark_fill,
+                  selected: _isBookmarked,
+                  onPressed: () {
+                    setState(() {
+                      _isBookmarked = !_isBookmarked;
+                    });
+                  },
                 ),
               ],
             ),
