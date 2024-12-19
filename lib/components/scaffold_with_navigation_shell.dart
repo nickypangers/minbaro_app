@@ -27,8 +27,8 @@ class _ScaffoldWithNavigationShellState
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppState>(builder: (context, appState, _) {
-      return Stack(
+    return Consumer<AppState>(
+      builder: (context, appState, _) => Stack(
         children: [
           Scaffold(
             body: widget.navigationShell,
@@ -46,8 +46,8 @@ class _ScaffoldWithNavigationShellState
               child: Opacity(opacity: 1),
             ),
         ],
-      );
-    });
+      ),
+    );
   }
 }
 
@@ -73,6 +73,7 @@ class _CustomBottomNavBar extends StatelessWidget {
     _NavItem(iconData: CupertinoIcons.home),
     _NavItem(iconData: CupertinoIcons.search),
     _NavItem(iconData: CupertinoIcons.bell),
+    _NavItem(iconData: CupertinoIcons.person),
   ];
 
   @override
@@ -82,7 +83,7 @@ class _CustomBottomNavBar extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: Colors.grey,
-            width: 1,
+            width: 0,
           ),
         ),
       ),
@@ -98,7 +99,8 @@ class _CustomBottomNavBar extends StatelessWidget {
             ),
             activeIcon: Icon(
               item.iconData,
-              color: Theme.of(context).colorScheme.primary,
+              // color: Theme.of(context).colorScheme.primary,
+              color: Colors.white,
             ),
             selected: index == selectedIndex,
             onTap: () => onTap(index % 2),
@@ -128,7 +130,8 @@ class _CustomBottomNavBar extends StatelessWidget {
               width: 4,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Theme.of(context).indicatorColor,
+                // color: Theme.of(context).indicatorColor,
+                color: Colors.white,
               ),
             )
           else

@@ -40,7 +40,10 @@ class RootAppBar extends StatelessWidget {
   Widget _buildAvatar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: CircleAvatar(),
+      child: GestureDetector(
+        onTap: () {},
+        child: CircleAvatar(),
+      ),
     );
   }
 }
