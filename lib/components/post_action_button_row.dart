@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:minbaro_app/components/post_action_button.dart';
+import 'package:minbaro_app/models/models.dart';
 
 class PostActionButtonRow extends StatefulWidget {
-  const PostActionButtonRow({super.key});
+  const PostActionButtonRow({
+    required this.post,
+    super.key,
+  });
+
+  final Post post;
 
   @override
   State<PostActionButtonRow> createState() => _PostActionButtonRowState();
@@ -34,7 +40,7 @@ class _PostActionButtonRowState extends State<PostActionButtonRow> {
         PostActionButton(
           iconData: CupertinoIcons.bubble_middle_bottom,
           selectedIconData: CupertinoIcons.bubble_middle_bottom_fill,
-          label: '80',
+          label: '${widget.post.commentCount}',
           selected: _isCommented,
           onPressed: () {
             setState(() {

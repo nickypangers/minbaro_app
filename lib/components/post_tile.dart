@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:minbaro_app/components/more_modal_sheet.dart';
 import 'package:minbaro_app/components/post_action_button_row.dart';
 import 'package:minbaro_app/components/post_author_header.dart';
-import 'package:minbaro_app/models/post.dart';
+import 'package:minbaro_app/models/models.dart';
 
 class PostTile extends StatefulWidget {
   const PostTile({
@@ -31,7 +31,7 @@ class _PostTileState extends State<PostTile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 8,
             children: [
-              PostAuthorHeader(),
+              PostAuthorHeader(post: widget.post),
               Spacer(),
               CupertinoButton(
                 padding: const EdgeInsets.all(0),
@@ -66,7 +66,7 @@ class _PostTileState extends State<PostTile> {
             ),
           ),
           _buildIndentedRow(
-            child: PostActionButtonRow(),
+            child: PostActionButtonRow(post: widget.post),
           ),
         ],
       ),

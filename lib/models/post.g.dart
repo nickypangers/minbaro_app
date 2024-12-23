@@ -6,17 +6,26 @@ part of 'post.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
+Post _$PostFromJson(Map<String, dynamic> json) => Post(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       body: json['body'] as String,
-      topic: json['topic'] as String? ?? 'topic',
+      author: Author.fromJson(json['author'] as Map<String, dynamic>),
+      topic: Topic.fromJson(json['topic'] as Map<String, dynamic>),
+      createdAt: DateTimeHelper.sqlTimeToMilliseconds(
+          (json['created_at'] as num).toInt()),
+      updatedAt: DateTimeHelper.sqlTimeToMilliseconds(
+          (json['updated_at'] as num).toInt()),
+      commentCount: (json['comment_count'] as num?)?.toInt() ?? 0,
     );
 
-Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'body': instance.body,
-      'topic': instance.topic,
+      'author': instance.author.toJson(),
+      'topic': instance.topic.toJson(),
+      'created_at': DateTimeHelper.millisecondsToSqlTime(instance.createdAt),
+      'updated_at': DateTimeHelper.millisecondsToSqlTime(instance.updatedAt),
+      'comment_count': instance.commentCount,
     };

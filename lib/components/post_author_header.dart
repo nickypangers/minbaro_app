@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:minbaro_app/helpers/date_time_helper.dart';
+import 'package:minbaro_app/models/models.dart';
 
 class PostAuthorHeader extends StatelessWidget {
-  const PostAuthorHeader({super.key});
+  const PostAuthorHeader({required this.post, super.key});
+
+  final Post post;
 
   final double _radius = 20;
 
@@ -13,7 +17,7 @@ class PostAuthorHeader extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: _radius,
-          foregroundColor: Colors.lightBlue,
+          foregroundColor: Theme.of(context).colorScheme.onSurface,
           foregroundImage: NetworkImage(
             'https://picsum.photos/id/1/200/200',
           ),
@@ -25,21 +29,37 @@ class PostAuthorHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'nickypangers',
+                post.author.username,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Text.rich(
                 TextSpan(
-                  text: 'topic',
+                  text: post.topic.name,
                   style: Theme.of(context).textTheme.labelMedium!.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),
                   children: [
                     TextSpan(
-                      text: ' • 3m',
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface),
-                    ),
+                        text:
+                            ' • ${DateTimeHelper.formatAgoString(post.createdAt)}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(
+                                color: Theme.of(context).colorScheme.onSurface),
+                        children: [
+                          if (post.createdAt != post.updatedAt)
+                            TextSpan(
+                              text: ' edited',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface),
+                            ),
+                        ]),
                   ],
                 ),
               ),
