@@ -17,4 +17,14 @@ class PostService {
     final res = await http.get(uri);
     return jsonDecode(res.body) as List<dynamic>;
   }
+
+  Future<dynamic> addCommentToPost(
+      int postId, Map<String, dynamic> data) async {
+    final res = await http.post(
+      Uri.parse('$_baseUrl/posts/$postId/comments'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(data),
+    );
+    return jsonDecode(res.body);
+  }
 }

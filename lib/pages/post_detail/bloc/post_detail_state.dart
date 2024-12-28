@@ -2,11 +2,12 @@ part of 'post_detail_bloc.dart';
 
 enum PostDetailStatus { initial, loading, success, failure }
 
-abstract class PostDetailState extends Equatable {
+class PostDetailState extends Equatable {
   const PostDetailState({
     required this.post,
     required this.comments,
     required this.status,
+    this.replyingTo,
   });
 
   final Post post;
@@ -15,26 +16,49 @@ abstract class PostDetailState extends Equatable {
 
   final PostDetailStatus status;
 
-  Map<int, List<Comment>> get groupedComments {
-    final map = <int, List<Comment>>{};
+  final Comment? replyingTo;
 
+  List<Comment> get rootComments {
+    final Map<int?, List<Comment>> groupedComments = {};
     for (final comment in comments) {
-      final key = comment.parentId ?? comment.id;
-
-      if (!map.containsKey(key)) {
-        map[key] = [];
-      } else {
-        map[key]!.add(comment);
+      if (comment.parentId != null) {
+        if (!groupedComments.containsKey(comment.parentId)) {
+          groupedComments[comment.parentId] = [];
+        }
+        groupedComments[comment.parentId]!.add(comment);
       }
     }
 
-    return map;
+    for (final key in groupedComments.keys) {
+      if (key != null) {
+        final comment = comments.firstWhere((comment) => comment.id == key);
+        comment.addChildren(groupedComments[key] ?? []);
+      }
+    }
+
+    return comments.where((comment) => comment.parentId == null).toList();
+  }
+
+  PostDetailState copyWith({
+    Post? post,
+    List<Comment>? comments,
+    PostDetailStatus? status,
+    Comment? replyingTo,
+  }) {
+    return PostDetailState(
+      post: post ?? this.post,
+      comments: comments ?? this.comments,
+      status: status ?? this.status,
+      replyingTo: replyingTo,
+    );
   }
 
   @override
   List<Object?> get props => [
         post,
         comments,
+        status,
+        replyingTo,
       ];
 }
 

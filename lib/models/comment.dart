@@ -7,7 +7,7 @@ part 'comment.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Comment extends Equatable {
-  const Comment({
+  Comment({
     required this.id,
     required this.body,
     required this.postId,
@@ -34,6 +34,14 @@ class Comment extends Equatable {
       toJson: DateTimeHelper.millisecondsToSqlTime)
   final int updatedAt;
 
+  List<Comment> _children = [];
+
+  List<Comment> get children => _children;
+
+  void addChildren(List<Comment> children) {
+    _children = children;
+  }
+
   Map<String, dynamic> toJson() => _$CommentToJson(this);
 
   @override
@@ -44,4 +52,27 @@ class Comment extends Equatable {
   @override
   List<Object?> get props =>
       [id, body, postId, parentId, author, createdAt, updatedAt];
+}
+
+@JsonSerializable()
+class NewComment extends Equatable {
+  const NewComment({
+    required this.body,
+    required this.postId,
+    required this.authorId,
+    this.parentId,
+  });
+
+  factory NewComment.fromJson(Map<String, dynamic> json) =>
+      _$NewCommentFromJson(json);
+
+  final String body;
+  final int postId;
+  final int authorId;
+  final int? parentId;
+
+  Map<String, dynamic> toJson() => _$NewCommentToJson(this);
+
+  @override
+  List<Object?> get props => [body, postId, authorId, parentId];
 }

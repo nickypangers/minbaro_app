@@ -18,9 +18,9 @@ class PostAuthorHeader extends StatelessWidget {
         CircleAvatar(
           radius: _radius,
           foregroundColor: Theme.of(context).colorScheme.onSurface,
-          foregroundImage: NetworkImage(
-            'https://picsum.photos/id/1/200/200',
-          ),
+          // foregroundImage: NetworkImage(
+          //   'https://picsum.photos/id/1/200/200',
+          // ),
         ),
         SizedBox(
           height: _radius * 2,

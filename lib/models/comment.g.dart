@@ -27,3 +27,18 @@ Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
       'createdAt': DateTimeHelper.millisecondsToSqlTime(instance.createdAt),
       'updatedAt': DateTimeHelper.millisecondsToSqlTime(instance.updatedAt),
     };
+
+NewComment _$NewCommentFromJson(Map<String, dynamic> json) => NewComment(
+      body: json['body'] as String,
+      postId: (json['postId'] as num).toInt(),
+      authorId: (json['authorId'] as num).toInt(),
+      parentId: (json['parentId'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$NewCommentToJson(NewComment instance) =>
+    <String, dynamic>{
+      'body': instance.body,
+      'postId': instance.postId,
+      'authorId': instance.authorId,
+      'parentId': instance.parentId,
+    };
